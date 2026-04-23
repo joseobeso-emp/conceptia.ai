@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ConceptIA — Intelligenza Artificiale per il tuo Business</title>
+<meta name="description" content="ConceptIA: consulenza AI per far crescere il tuo business in Italia.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0a2463;
+  --blue:#0077b6;
+  --cyan:#00b4d8;
+  --dark:#0f172a;
+  --text:#1e293b;
+  --muted:#64748b;
+  --off:#f5f7ff;
+  --border:#e2e8f0;
+  --grad:linear-gradient(135deg,#0a2463,#0077b6 55%,#00b4d8);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,sans-serif;color:var(--text);background:#fff;overflow-x:hidden}
+
+
+/* ---- NAV ---- */
+#nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  padding:18px 48px;display:flex;align-items:center;justify-content:space-between;
+  transition:all .3s;
+}
+#nav.scrolled{background:rgba(255,255,255,.95);backdrop-filter:blur(20px);padding:12px 48px;box-shadow:0 1px 0 rgba(0,0,0,.08)}
+.nav-logo img{height:40px;object-fit:contain}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{text-decoration:none;color:rgba(255,255,255,.88);font-size:14px;font-weight:500;transition:opacity .2s}
+#nav.scrolled .nav-links a{color:var(--text)}
+.nav-links a:hover{opacity:.6}
+.nav-r{display:flex;align-items:center;gap:14px}
+.lsw{display:flex;gap:6px}
+.lb{background:none;border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.85);padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.06em;font-family:inherit}
+#nav.scrolled .lb{border-color:var(--border);color:var(--text)}
+.lb.on,.lb:hover{background:var(--cyan)!important;border-color:var(--cyan)!important;color:#fff!important}
+.hbg{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+.hbg span{width:24px;height:2px;background:#fff;border-radius:2px;transition:.3s}
+#nav.scrolled .hbg span{background:var(--text)}
+
+/* ---- MOBILE MENU ---- */
+#mob{display:none;position:fixed;inset:0;background:#fff;z-index:998;flex-direction:column;padding:88px 32px 32px;gap:18px}
+#mob.open{display:flex}
+#mob a{font-size:20px;font-weight:700;color:var(--dark);text-decoration:none;border-bottom:1px solid var(--border);padding-bottom:14px}
+.mob-x{position:absolute;top:22px;right:24px;background:none;border:none;font-size:26px;cursor:pointer;font-family:inherit}
+
+/* ---- HERO ---- */
+#hero{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.h-bg{position:absolute;inset:0;background:var(--grad)}
+.h-img{position:absolute;inset:0;background:url('assets/founders.png') center top/cover no-repeat;opacity:.18;transform:scale(1.05)}
+#pts{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.h-ct{position:relative;z-index:2;text-align:center;padding:0 24px;max-width:900px}
+.h-eye{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);margin-bottom:20px;opacity:0;animation:fadeUp .7s .2s both}
+.h-h1{font-size:clamp(38px,6vw,80px);font-weight:800;color:#fff;line-height:1.06;margin-bottom:20px;opacity:0;animation:fadeUp .7s .4s both}
+.h-h1 em{font-style:normal;background:linear-gradient(90deg,#00b4d8,#90e0ef);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.h-sub{font-size:clamp(15px,2vw,19px);color:rgba(255,255,255,.7);font-weight:300;line-height:1.7;max-width:660px;margin:0 auto 40px;opacity:0;animation:fadeUp .7s .6s both}
+.h-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeUp .7s .8s both}
+.btn-p{background:var(--cyan);color:#fff;padding:14px 32px;border-radius:50px;text-decoration:none;font-weight:600;font-size:15px;border:2px solid var(--cyan);transition:.3s}
+.btn-p:hover{background:transparent;color:var(--cyan)}
+.btn-o{color:#fff;padding:14px 32px;border-radius:50px;text-decoration:none;font-weight:600;font-size:15px;border:2px solid rgba(255,255,255,.35);transition:.3s}
+.btn-o:hover{border-color:#fff;background:rgba(255,255,255,.1)}
+.h-scroll{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.4);display:flex;flex-direction:column;align-items:center;gap:6px;animation:bob 2s infinite}
+.h-scroll::before{content:'';width:1px;height:32px;background:linear-gradient(to bottom,transparent,rgba(255,255,255,.4))}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(7px)}}
+@keyframes ptrise{0%{transform:translateY(100vh);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-60px);opacity:0}}
+
+/* ---- SCROLL REVEAL (só activa con JS) ---- */
+.sr{transition:opacity .8s,transform .8s}
+body.js .sr{opacity:0;transform:translateY(32px)}
+body.js .sr.vis{opacity:1;transform:translateY(0)}
+body.js .sl{opacity:0;transform:translateX(-32px);transition:opacity .8s,transform .8s}
+body.js .sl.vis{opacity:1;transform:translateX(0)}
+body.js .srr{opacity:0;transform:translateX(32px);transition:opacity .8s,transform .8s}
+body.js .srr.vis{opacity:1;transform:translateX(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+
+/* ---- LAYOUT ---- */
+section{padding:96px 0}
+.w{max-width:1100px;margin:0 auto;padding:0 24px}
+.eye{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);margin-bottom:12px}
+.h2{font-size:clamp(28px,4vw,50px);font-weight:800;color:var(--dark);line-height:1.1;margin-bottom:20px}
+.lead{font-size:17px;color:var(--muted);line-height:1.75;max-width:600px}
+
+/* ---- CHI SIAMO ---- */
+#chi-siamo{background:#fff}
+.ab-g{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center}
+.ab-img{position:relative;border-radius:22px;overflow:hidden}
+.ab-img img{width:100%;height:auto;display:block;border-radius:22px}
+.ab-img::after{content:'';position:absolute;inset:0;border-radius:22px;background:linear-gradient(to top,rgba(10,36,99,.22),transparent)}
+.ab-badge{position:absolute;bottom:24px;left:24px;z-index:2;background:#fff;border-radius:13px;padding:12px 20px;box-shadow:0 12px 40px rgba(0,0,0,.14)}
+.ab-bn{font-size:30px;font-weight:800;color:var(--navy);line-height:1}
+.ab-bn span{color:var(--cyan)}
+.ab-bl{font-size:11px;color:var(--muted);margin-top:3px}
+.ab-p{font-size:16px;line-height:1.8;color:var(--text);margin-bottom:16px}
+.ab-feats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px}
+.feat{display:flex;align-items:flex-start;gap:10px}
+.f-ic{width:32px;height:32px;border-radius:8px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.f-tx strong{display:block;font-size:13px;font-weight:700;color:var(--dark)}
+.f-tx span{font-size:12px;color:var(--muted)}
+
+/* ---- QUOTE ---- */
+#quote{background:#fff;padding:64px 0;text-align:center}
+.q-t{font-family:'Cormorant Garamond',serif;font-size:clamp(20px,4vw,44px);font-style:italic;color:var(--navy);line-height:1.4;max-width:760px;margin:0 auto 16px}
+.q-a{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+
+/* ---- STORIA ---- */
+#storia{background:var(--off);position:relative;overflow:hidden}
+#storia::before{content:'';position:absolute;top:-60px;right:-140px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(0,180,216,.07),transparent)}
+.tl{position:relative;margin-top:48px}
+.tl::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--cyan),var(--navy));transform:translateX(-50%)}
+.tl-row{display:flex;gap:40px;margin-bottom:48px}
+.tl-row:nth-child(even){flex-direction:row-reverse}
+.tl-box{flex:1;background:#fff;border-radius:16px;padding:28px;box-shadow:0 4px 28px rgba(0,0,0,.06)}
+.tl-row:nth-child(odd) .tl-box{text-align:right}
+.tl-dot{position:absolute;left:50%;top:20px;transform:translateX(-50%);width:13px;height:13px;border-radius:50%;background:var(--cyan);border:3px solid #fff;box-shadow:0 0 0 3px var(--cyan);z-index:1}
+.tl-yr{font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--cyan);text-transform:uppercase;margin-bottom:5px}
+.tl-ti{font-size:17px;font-weight:700;color:var(--dark);margin-bottom:8px}
+.tl-tx{font-size:13px;color:var(--muted);line-height:1.7}
+.tl-sp{flex:1}
+
+/* ---- MISSIONE ---- */
+#missione{background:var(--navy);text-align:center;padding:96px 0;position:relative;overflow:hidden}
+#missione .eye{color:var(--cyan)}
+#missione .h2{color:#fff;max-width:760px;margin:0 auto 18px}
+#missione .lead{color:rgba(255,255,255,.6);margin:0 auto 48px}
+.ms-g{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;text-align:left}
+.ms-c{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:28px;transition:.3s}
+.ms-c:hover{background:rgba(255,255,255,.09);transform:translateY(-4px)}
+.ms-ic{width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,var(--cyan),var(--blue));display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px}
+.ms-c h3{font-size:16px;font-weight:700;color:#fff;margin-bottom:8px}
+.ms-c p{font-size:13px;color:rgba(255,255,255,.55);line-height:1.7}
+
+/* ---- SERVIZI ---- */
+#servizi{background:#fff}
+.sv-hd{text-align:center;margin-bottom:48px}
+.sv-hd .lead{margin:0 auto}
+.sv-g{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.sv-c{border:1px solid var(--border);border-radius:16px;padding:28px;transition:.4s;position:relative;overflow:hidden}
+.sv-c::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad);transform:scaleX(0);transition:.4s}
+.sv-c:hover{box-shadow:0 16px 48px rgba(10,36,99,.1);transform:translateY(-4px);border-color:transparent}
+.sv-c:hover::before{transform:scaleX(1)}
+.sv-ic{font-size:28px;margin-bottom:14px}
+.sv-c h3{font-size:16px;font-weight:700;color:var(--dark);margin-bottom:8px}
+.sv-c p{font-size:13px;color:var(--muted);line-height:1.7}
+
+/* ---- FONDATORI ---- */
+#fondatori{background:var(--off)}
+.fn-hd{text-align:center;margin-bottom:48px}
+.fn-hd .lead{margin:0 auto}
+.fn-g{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.fn-c{background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 6px 36px rgba(0,0,0,.08);transition:.4s}
+.fn-c:hover{transform:translateY(-6px)}
+.fn-ph{width:100%;height:auto;display:block}
+.fn-info{padding:26px}
+.fn-nm{font-size:21px;font-weight:800;color:var(--dark);margin-bottom:3px}
+.fn-rl{font-size:11px;font-weight:700;color:var(--cyan);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px}
+.fn-bio{font-size:13px;color:var(--muted);line-height:1.75;margin-bottom:18px}
+.sk-g{display:flex;flex-wrap:wrap;gap:6px}
+.sk{background:var(--off);color:var(--navy);padding:4px 11px;border-radius:20px;font-size:11px;font-weight:700}
+
+/* ---- TOGETHER ---- */
+#together{background:#fff;padding:80px 0}
+.tg-g{display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:center}
+.tg-img{border-radius:20px;overflow:hidden}
+.tg-img img{width:100%;height:auto;display:block;border-radius:20px}
+
+/* ---- NUMERI ---- */
+#numeri{background:var(--grad);padding:64px 0}
+.nm-g{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center}
+.nm-v{font-size:clamp(36px,5vw,60px);font-weight:800;color:#fff;line-height:1;margin-bottom:6px}
+.nm-v span{color:var(--cyan)}
+.nm-l{font-size:13px;color:rgba(255,255,255,.6);font-weight:500}
+
+/* ---- CONTATTI ---- */
+#contatti{background:#fff}
+.ct-g{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.ct-info h2{font-size:clamp(24px,3vw,38px);font-weight:800;color:var(--dark);margin-bottom:12px}
+.ct-info > p{font-size:16px;color:var(--muted);line-height:1.75;margin-bottom:24px}
+.ct-row{display:flex;align-items:center;gap:12px;margin-bottom:16px;font-size:14px;color:var(--text)}
+.ct-ic{width:40px;height:40px;border-radius:10px;background:var(--off);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.ct-frm{background:var(--off);border-radius:20px;padding:32px}
+.fg{margin-bottom:16px}
+.fg label{display:block;font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px}
+.fg input,.fg textarea,.fg select{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;font-size:14px;font-family:inherit;color:var(--text);background:#fff;outline:none;transition:.2s}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--cyan)}
+.fg textarea{height:100px;resize:vertical}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn-sub{width:100%;padding:14px;background:var(--grad);color:#fff;border:none;border-radius:50px;font-size:15px;font-weight:700;cursor:pointer;transition:.3s;font-family:inherit}
+.btn-sub:hover{opacity:.88;transform:translateY(-2px)}
+
+/* ---- FOOTER ---- */
+#footer{background:var(--dark);color:#fff;padding:56px 0 26px}
+.ft-g{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px;margin-bottom:40px}
+.ft-logo img{height:42px;object-fit:contain;display:block;margin-bottom:16px}
+.ft-d{font-size:13px;color:rgba(255,255,255,.42);line-height:1.75;max-width:260px}
+.ft-col h4{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:16px}
+.ft-ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+.ft-ul a{text-decoration:none;color:rgba(255,255,255,.58);font-size:13px;transition:.2s}
+.ft-ul a:hover{color:var(--cyan)}
+.ft-hr{border:none;border-top:1px solid rgba(255,255,255,.07);margin-bottom:20px}
+.ft-bot{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:rgba(255,255,255,.3)}
+.soc{display:flex;gap:10px}
+.soc a{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.5);font-size:12px;text-decoration:none;transition:.2s;font-style:normal;font-weight:700}
+.soc a:hover{background:var(--cyan);color:#fff}
+
+/* ---- MUSIC BTN ---- */
+#mbtn{position:fixed;bottom:20px;right:20px;z-index:998;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.9);backdrop-filter:blur(10px);border:1px solid rgba(0,0,0,.08);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:0 3px 16px rgba(0,0,0,.13);transition:.2s;font-family:inherit}
+#mbtn:hover{transform:scale(1.1)}
+#mbtn.muted{opacity:.4}
+
+/* ---- PARTICLES ---- */
+.pt{position:absolute;border-radius:50%;pointer-events:none;animation:ptrise linear infinite}
+
+/* ---- RESPONSIVE ---- */
+@media(max-width:900px){
+  section{padding:64px 0}
+  #nav{padding:14px 20px}
+  #nav.scrolled{padding:10px 20px}
+  .nav-links,.lsw{display:none}
+  .hbg{display:flex}
+  .ab-g,.fn-g,.tg-g,.ct-g{grid-template-columns:1fr;gap:32px}
+  .tl::before{display:none}
+  .tl-row,.tl-row:nth-child(even){flex-direction:column;gap:0}
+  .tl-dot,.tl-sp{display:none}
+  .tl-box{text-align:left!important}
+  .ms-g,.sv-g{grid-template-columns:1fr;gap:14px}
+  .nm-g{grid-template-columns:repeat(2,1fr);gap:24px}
+  .ft-g{grid-template-columns:1fr 1fr;gap:24px}
+  .f2{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+  .h-h1{font-size:34px}
+  .h-cta{flex-direction:column;align-items:center}
+  .nm-g{grid-template-columns:1fr 1fr}
+  .ft-g{grid-template-columns:1fr}
+  .ab-feats{grid-template-columns:1fr}
+  .tg-g{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo"><img src="assets/logo.jpeg" alt="ConceptIA"></a>
+  <ul class="nav-links">
+    <li><a href="#chi-siamo" data-t="n.ab">Chi Siamo</a></li>
+    <li><a href="#storia" data-t="n.st">La Nostra Storia</a></li>
+    <li><a href="#servizi" data-t="n.sv">Servizi</a></li>
+    <li><a href="#fondatori" data-t="n.fn">Fondatori</a></li>
+    <li><a href="#contatti" data-t="n.ct">Contatti</a></li>
+  </ul>
+  <div class="nav-r">
+    <div class="lsw">
+      <button class="lb on" onclick="setL('it')">IT</button>
+      <button class="lb" onclick="setL('es')">ES</button>
+      <button class="lb" onclick="setL('en')">EN</button>
+    </div>
+    <div class="hbg" onclick="openMob()"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div id="mob">
+  <button class="mob-x" onclick="closeMob()">&#x2715;</button>
+  <a href="#chi-siamo" onclick="closeMob()" data-t="n.ab">Chi Siamo</a>
+  <a href="#storia" onclick="closeMob()" data-t="n.st">La Nostra Storia</a>
+  <a href="#servizi" onclick="closeMob()" data-t="n.sv">Servizi</a>
+  <a href="#fondatori" onclick="closeMob()" data-t="n.fn">Fondatori</a>
+  <a href="#contatti" onclick="closeMob()" data-t="n.ct">Contatti</a>
+  <div class="lsw" style="margin-top:auto;padding-top:16px">
+    <button class="lb on" onclick="setL('it');closeMob()">IT</button>
+    <button class="lb" onclick="setL('es');closeMob()">ES</button>
+    <button class="lb" onclick="setL('en');closeMob()">EN</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="h-bg"></div>
+  <div class="h-img"></div>
+  <div id="pts"></div>
+  <div class="h-ct">
+    <div class="h-eye" data-t="h.ey">Intelligenza Artificiale &middot; Business Growth &middot; Italia</div>
+    <h1 class="h-h1" data-t="h.h1">Il Futuro del Tuo Business<br><em>Inizia Oggi</em></h1>
+    <p class="h-sub" data-t="h.sb">ConceptIA trasforma l&rsquo;Intelligenza Artificiale in crescita reale per la tua azienda. Siamo i tuoi partner strategici per conquistare il mercato italiano.</p>
+    <div class="h-cta">
+      <a href="#contatti" class="btn-p" data-t="h.c1">Scopri Come Crescere</a>
+      <a href="#storia" class="btn-o" data-t="h.c2">La Nostra Storia</a>
+    </div>
+  </div>
+  <div class="h-scroll">Scorri</div>
+</section>
+
+<!-- CHI SIAMO -->
+<section id="chi-siamo">
+  <div class="w">
+    <div class="ab-g">
+      <div class="ab-img sl">
+        <img src="assets/founders.png" alt="ConceptIA Team">
+        <div class="ab-badge">
+          <div class="ab-bn">100<span>%</span></div>
+          <div class="ab-bl" data-t="a.bg">Dedicati al tuo successo</div>
+        </div>
+      </div>
+      <div class="srr">
+        <div class="eye" data-t="a.ey">Chi Siamo</div>
+        <h2 class="h2" data-t="a.h2">Trasformiamo l&rsquo;AI in Valore Reale per il Tuo Business</h2>
+        <p class="ab-p" data-t="a.p1">ConceptIA &egrave; un&rsquo;agenzia di consulenza specializzata in Intelligenza Artificiale applicata al business. Siamo nati con una visione chiara: rendere l&rsquo;AI accessibile, comprensibile e profittevole per ogni tipo di impresa italiana.</p>
+        <p class="ab-p" data-t="a.p2">Crediamo che l&rsquo;Intelligenza Artificiale non sia un privilegio riservato alle grandi multinazionali, ma uno strumento potente che ogni azienda pu&ograve; e deve padroneggiare per rimanere competitiva.</p>
+        <div class="ab-feats">
+          <div class="feat"><div class="f-ic">&#129302;</div><div class="f-tx"><strong data-t="a.f1">AI Strategica</strong><span data-t="a.f1s">Soluzioni su misura</span></div></div>
+          <div class="feat"><div class="f-ic">&#128200;</div><div class="f-tx"><strong data-t="a.f2">Crescita Misurabile</strong><span data-t="a.f2s">ROI concreto</span></div></div>
+          <div class="feat"><div class="f-ic">&#129309;</div><div class="f-tx"><strong data-t="a.f3">Partnership Vera</strong><span data-t="a.f3s">Siamo al tuo fianco</span></div></div>
+          <div class="feat"><div class="f-ic">&#127988;</div><div class="f-tx"><strong data-t="a.f4">Mercato Italiano</strong><span data-t="a.f4s">Esperti del settore</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section id="quote">
+  <div class="w">
+    <p class="q-t sr" data-t="q.t">&ldquo;Non stiamo vendendo tecnologia. Stiamo costruendo il futuro dei nostri clienti.&rdquo;</p>
+    <p class="q-a sr d1">&mdash; Jose Obeso &amp; Julio Aguero, Fondatori di ConceptIA</p>
+  </div>
+</section>
+
+<!-- STORIA -->
+<section id="storia">
+  <div class="w">
+    <div style="text-align:center;margin-bottom:48px">
+      <div class="eye sr" data-t="s.ey">La Nostra Storia</div>
+      <h2 class="h2 sr" style="max-width:600px;margin-left:auto;margin-right:auto" data-t="s.h2">Da Una Visione Condivisa Nasce ConceptIA</h2>
+      <p class="lead sr" style="margin:0 auto" data-t="s.sb">Un percorso di innovazione, passione e determinazione per trasformare il modo in cui le aziende italiane abbracciano il futuro.</p>
+    </div>
+    <div class="tl">
+      <div class="tl-row">
+        <div class="tl-box sr"><div class="tl-yr" data-t="s.y1">2019</div><div class="tl-ti" data-t="s.t1">L&rsquo;Inizio del Percorso</div><p class="tl-tx" data-t="s.d1">Jose Obeso, dopo anni di esperienza nel settore IT e nello sviluppo di sistemi AI in grandi aziende europee, inizia a maturare la visione di portare l&rsquo;intelligenza artificiale alle piccole e medie imprese italiane.</p></div>
+        <div class="tl-dot"></div><div class="tl-sp"></div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-sp"></div><div class="tl-dot"></div>
+        <div class="tl-box sr"><div class="tl-yr" data-t="s.y2">2021</div><div class="tl-ti" data-t="s.t2">L&rsquo;Incontro Decisivo</div><p class="tl-tx" data-t="s.d2">Julio Aguero, con un solido background nelle relazioni istituzionali e nella direzione commerciale internazionale, incontra Jose. I due condividono la stessa visione: le aziende italiane meritano un partner tecnologico che parli la loro lingua.</p></div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-box sr"><div class="tl-yr" data-t="s.y3">2023</div><div class="tl-ti" data-t="s.t3">Nasce ConceptIA</div><p class="tl-tx" data-t="s.d3">Dopo due anni di ricerca e test con clienti pilota, ConceptIA viene fondata ufficialmente. La missione: non limitarsi al cliente diretto, ma pensare al cliente finale del cliente &mdash; colui che beneficia della trasformazione digitale.</p></div>
+        <div class="tl-dot"></div><div class="tl-sp"></div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-sp"></div><div class="tl-dot"></div>
+        <div class="tl-box sr"><div class="tl-yr" data-t="s.y4">2024&ndash;2026</div><div class="tl-ti" data-t="s.t4">Leader del Mercato Italiano</div><p class="tl-tx" data-t="s.d4">ConceptIA si afferma come punto di riferimento per la consulenza AI in Italia, espandendo la rete di partner strategici e accompagnando decine di aziende nella trasformazione digitale.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MISSIONE -->
+<section id="missione">
+  <div class="w">
+    <div class="eye sr" data-t="m.ey">La Nostra Missione</div>
+    <h2 class="h2 sr" data-t="m.h2">Non Solo il Tuo Cliente.<br>Il Cliente del Tuo Cliente.</h2>
+    <p class="lead sr" data-t="m.sb">Il nostro obiettivo va oltre la consulenza tradizionale. Lavoriamo perch&eacute; il valore dei nostri clienti arrivi chiaramente al loro mercato finale.</p>
+    <div class="ms-g">
+      <div class="ms-c sr d1"><div class="ms-ic">&#127919;</div><h3 data-t="m.c1">Posizionamento Strategico</h3><p data-t="m.c1d">Aiutiamo le aziende a occupare una posizione di leadership percepita nel mercato, comunicando il proprio valore in modo chiaro e differenziante grazie all&rsquo;AI.</p></div>
+      <div class="ms-c sr d2"><div class="ms-ic">&#128279;</div><h3 data-t="m.c2">Partner, Non Fornitori</h3><p data-t="m.c2d">Scegliamo di essere partner a lungo termine. Cresciamo insieme, condividiamo i successi e affrontiamo le sfide fianco a fianco come veri alleati.</p></div>
+      <div class="ms-c sr d3"><div class="ms-ic">&#10024;</div><h3 data-t="m.c3">Modernit&agrave; come Presente</h3><p data-t="m.c3d">La modernit&agrave; non &egrave; il futuro &mdash; &egrave; il presente. Portiamo le aziende a comunicare nel linguaggio del mercato di oggi, dove l&rsquo;AI &egrave; gi&agrave; protagonista.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVIZI -->
+<section id="servizi">
+  <div class="w">
+    <div class="sv-hd">
+      <div class="eye sr" data-t="sv.ey">Cosa Facciamo</div>
+      <h2 class="h2 sr" data-t="sv.h2">Servizi AI che Generano Risultati Concreti</h2>
+      <p class="lead sr" data-t="sv.sb">Ogni servizio &egrave; progettato per trasformare l&rsquo;intelligenza artificiale in vantaggio competitivo reale.</p>
+    </div>
+    <div class="sv-g">
+      <div class="sv-c sr d1"><div class="sv-ic">&#129504;</div><h3 data-t="sv.1t">AI Consulting &amp; Strategy</h3><p data-t="sv.1d">Analizziamo il tuo business e definiamo la roadmap AI ideale per massimizzare crescita e competitivit&agrave; nel tuo settore.</p></div>
+      <div class="sv-c sr d2"><div class="sv-ic">&#9889;</div><h3 data-t="sv.2t">Automazione Intelligente</h3><p data-t="sv.2d">Automatizziamo i processi ripetitivi con AI, liberando il tuo team per attivit&agrave; ad alto valore aggiunto.</p></div>
+      <div class="sv-c sr d3"><div class="sv-ic">&#128172;</div><h3 data-t="sv.3t">AI per la Customer Experience</h3><p data-t="sv.3d">Chatbot avanzati, personalizzazione automatica e analisi del sentiment per un&rsquo;esperienza cliente eccezionale.</p></div>
+      <div class="sv-c sr d1"><div class="sv-ic">&#128202;</div><h3 data-t="sv.4t">Data Analytics &amp; BI</h3><p data-t="sv.4d">Trasformiamo i tuoi dati in insight strategici. Dashboard intelligenti e previsioni AI per decisioni pi&ugrave; rapide.</p></div>
+      <div class="sv-c sr d2"><div class="sv-ic">&#128640;</div><h3 data-t="sv.5t">AI Marketing &amp; Growth</h3><p data-t="sv.5d">Strategie di marketing potenziate dall&rsquo;AI: targeting preciso, contenuti generativi e ottimizzazione automatica.</p></div>
+      <div class="sv-c sr d3"><div class="sv-ic">&#127891;</div><h3 data-t="sv.6t">Formazione &amp; Change Management</h3><p data-t="sv.6d">Formiamo il tuo team nell&rsquo;uso dell&rsquo;AI e accompagniamo l&rsquo;organizzazione nel cambiamento culturale.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FONDATORI -->
+<section id="fondatori">
+  <div class="w">
+    <div class="fn-hd">
+      <div class="eye sr" data-t="f.ey">I Fondatori</div>
+      <h2 class="h2 sr" data-t="f.h2">Le Persone Dietro ConceptIA</h2>
+      <p class="lead sr" data-t="f.sb">Due professionisti, una visione condivisa: fare dell&rsquo;Italia un paese all&rsquo;avanguardia nell&rsquo;adozione dell&rsquo;Intelligenza Artificiale nel business.</p>
+    </div>
+    <div class="fn-g">
+      <div class="fn-c sl">
+        <img src="assets/jose.png" alt="Jose Obeso" class="fn-ph">
+        <div class="fn-info">
+          <div class="fn-nm">Jose Obeso</div>
+          <div class="fn-rl" data-t="f.r1">Co-Fondatore &amp; CTO &mdash; Esperto di Intelligenza Artificiale</div>
+          <p class="fn-bio" data-t="f.b1">Con oltre 12 anni di esperienza nel settore IT e 7 anni dedicati allo sviluppo di sistemi AI in aziende leader europee, Jose porta in ConceptIA una visione tecnica profonda e la capacit&agrave; di tradurre tecnologie complesse in soluzioni di business concrete. Formatosi tra Barcellona e Milano, ha guidato progetti di trasformazione digitale nei settori finance, retail e manufacturing.</p>
+          <div class="sk-g"><span class="sk">Machine Learning</span><span class="sk">AI Strategy</span><span class="sk">Python &amp; Cloud</span><span class="sk">NLP</span><span class="sk">Digital Transformation</span></div>
+        </div>
+      </div>
+      <div class="fn-c srr">
+        <img src="assets/julio.png" alt="Julio Aguero" class="fn-ph">
+        <div class="fn-info">
+          <div class="fn-nm">Julio Aguero</div>
+          <div class="fn-rl" data-t="f.r2">Co-Fondatore &amp; CEO &mdash; Direttore Commerciale e Relazioni Pubbliche</div>
+          <p class="fn-bio" data-t="f.b2">Julio &egrave; il ponte tra la tecnologia e il mercato. Con una carriera di 15 anni nella direzione commerciale e nelle relazioni istituzionali internazionali, ha costruito reti di partnership strategiche in tutta Europa. La sua abilit&agrave; nel comprendere le esigenze reali delle aziende &egrave; il motore commerciale di ConceptIA.</p>
+          <div class="sk-g"><span class="sk">Business Development</span><span class="sk">Relazioni Istituzionali</span><span class="sk">Strategic Partnerships</span><span class="sk">Sales Leadership</span><span class="sk">Public Relations</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOGETHER -->
+<section id="together">
+  <div class="w">
+    <div class="tg-g">
+      <div class="tg-img sl"><img src="assets/founders.png" alt="Jose e Julio - ConceptIA"></div>
+      <div class="srr">
+        <div class="eye" data-t="tg.ey">Una Partnership Solida</div>
+        <h2 class="h2" data-t="tg.h2">Due Menti, Una Visione</h2>
+        <p style="font-size:16px;color:var(--muted);line-height:1.8;margin-bottom:18px" data-t="tg.p1">Jose e Julio si sono conosciuti a Milano nel 2021, entrambi convinti che l&rsquo;Italia avesse bisogno di qualcosa di diverso: non un&rsquo;altra societ&agrave; di consulenza tecnologica, ma un vero partner che ragionasse come un imprenditore.</p>
+        <p style="font-size:16px;color:var(--muted);line-height:1.8;margin-bottom:28px" data-t="tg.p2">La complementarit&agrave; delle loro competenze &mdash; tecnica profonda per Jose, commerciale e relazionale per Julio &mdash; &egrave; la forza distintiva di ConceptIA.</p>
+        <a href="#contatti" class="btn-p" data-t="tg.ct">Incontra il Team</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NUMERI -->
+<section id="numeri">
+  <div class="w">
+    <div class="nm-g">
+      <div class="sr"><div class="nm-v">50<span>+</span></div><div class="nm-l" data-t="nm.1">Aziende Partner</div></div>
+      <div class="sr d1"><div class="nm-v">3<span>x</span></div><div class="nm-l" data-t="nm.2">ROI Medio dei Clienti</div></div>
+      <div class="sr d2"><div class="nm-v">98<span>%</span></div><div class="nm-l" data-t="nm.3">Tasso di Soddisfazione</div></div>
+      <div class="sr d3"><div class="nm-v">5<span>&#9733;</span></div><div class="nm-l" data-t="nm.4">Rating Medio Partner</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATTI -->
+<section id="contatti">
+  <div class="w">
+    <div class="ct-g">
+      <div class="ct-info sl">
+        <div class="eye" data-t="ct.ey">Contattaci</div>
+        <h2 data-t="ct.h2">Inizia la Tua Trasformazione AI</h2>
+        <p data-t="ct.sb">Siamo pronti ad ascoltarti. Raccontaci il tuo business e scopriremo insieme come l&rsquo;AI pu&ograve; accelerare la tua crescita.</p>
+        <div class="ct-row"><div class="ct-ic">&#128231;</div><div><strong>Email</strong><br>info@conceptia.it</div></div>
+        <div class="ct-row"><div class="ct-ic">&#128241;</div><div><strong data-t="ct.ph">Telefono</strong><br>+39 02 1234 5678</div></div>
+        <div class="ct-row"><div class="ct-ic">&#128205;</div><div><strong data-t="ct.hq">Sede</strong><br>Milano, Italia</div></div>
+        <div class="ct-row"><div class="ct-ic">&#128279;</div><div><strong>LinkedIn</strong><br>ConceptIA Italia</div></div>
+      </div>
+      <div class="ct-frm srr">
+        <form onsubmit="submitForm(event)">
+          <div class="f2">
+            <div class="fg"><label data-t="fm.nm">Nome</label><input type="text" placeholder="Il tuo nome" required></div>
+            <div class="fg"><label data-t="fm.co">Azienda</label><input type="text" placeholder="Nome azienda"></div>
+          </div>
+          <div class="fg"><label data-t="fm.em">Email</label><input type="email" placeholder="tua@email.com" required></div>
+          <div class="fg">
+            <label data-t="fm.sv">Servizio di Interesse</label>
+            <select>
+              <option data-t="fm.s0">Seleziona un servizio</option>
+              <option>AI Consulting &amp; Strategy</option>
+              <option data-t="sv.2t">Automazione Intelligente</option>
+              <option data-t="sv.3t">AI per Customer Experience</option>
+              <option>Data Analytics &amp; BI</option>
+              <option data-t="sv.5t">AI Marketing &amp; Growth</option>
+              <option data-t="sv.6t">Formazione AI</option>
+            </select>
+          </div>
+          <div class="fg"><label data-t="fm.ms">Messaggio</label><textarea placeholder="Raccontaci del tuo business..."></textarea></div>
+          <button type="submit" class="btn-sub" data-t="fm.sb">Invia Messaggio &#8594;</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="w">
+    <div class="ft-g">
+      <div>
+        <div class="ft-logo"><img src="assets/logo.jpeg" alt="ConceptIA"></div>
+        <p class="ft-d" data-t="ft.d">ConceptIA &egrave; il partner italiano di riferimento per la consulenza in Intelligenza Artificiale. Trasformiamo l&rsquo;AI in crescita reale.</p>
+        <div class="soc" style="margin-top:18px"><a href="#">in</a><a href="#">tw</a><a href="#">ig</a></div>
+      </div>
+      <div class="ft-col"><h4 data-t="ft.h1">Azienda</h4><ul class="ft-ul"><li><a href="#chi-siamo" data-t="n.ab">Chi Siamo</a></li><li><a href="#fondatori" data-t="n.fn">I Fondatori</a></li><li><a href="#storia" data-t="n.st">La Nostra Storia</a></li><li><a href="#missione" data-t="ft.ms">La Missione</a></li></ul></div>
+      <div class="ft-col"><h4 data-t="ft.h2">Servizi</h4><ul class="ft-ul"><li><a href="#servizi">AI Consulting</a></li><li><a href="#servizi" data-t="sv.2t">Automazione</a></li><li><a href="#servizi">Data Analytics</a></li><li><a href="#servizi" data-t="sv.5t">AI Marketing</a></li></ul></div>
+      <div class="ft-col"><h4 data-t="ft.h3">Contatti</h4><ul class="ft-ul"><li><a href="mailto:info@conceptia.it">info@conceptia.it</a></li><li><a href="tel:+390212345678">+39 02 1234 5678</a></li><li><a href="#">Milano, Italia</a></li></ul></div>
+    </div>
+    <hr class="ft-hr">
+    <div class="ft-bot">
+      <span data-t="ft.cp">&copy; 2026 ConceptIA S.r.l. &mdash; Tutti i diritti riservati &middot; P.IVA IT12345678901</span>
+      <span>Empowering Business | Enhancing Growth | AI Partners</span>
+    </div>
+  </div>
+</footer>
+
+<!-- MUSIC BUTTON -->
+<button id="mbtn" title="Musica" onclick="toggleMusic()">&#127925;</button>
+
+<script>
+// ── INIT JS FLAG (reveal animations solo se JS attivo) ──
+document.body.classList.add('js');
+
+// ── NAV SCROLL ──
+var nav = document.getElementById('nav');
+window.addEventListener('scroll', function() {
+  nav.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// ── MOBILE MENU ──
+function openMob() { document.getElementById('mob').classList.add('open'); }
+function closeMob() { document.getElementById('mob').classList.remove('open'); }
+
+// ── PARTICLES ──
+(function() {
+  var c = document.getElementById('pts');
+  for (var i = 0; i < 16; i++) {
+    var p = document.createElement('div');
+    p.className = 'pt';
+    var s = Math.random() * 4 + 2;
+    p.style.cssText = 'width:' + s + 'px;height:' + s + 'px;left:' + (Math.random()*100) + '%;background:rgba(0,180,216,' + (Math.random()*.2+.08) + ');animation-duration:' + (Math.random()*13+8) + 's;animation-delay:' + (Math.random()*8) + 's;';
+    c.appendChild(p);
+  }
+})();
+
+// ── SCROLL REVEAL ──
+var io = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting) { e.target.classList.add('vis'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+document.querySelectorAll('.sr,.sl,.srr').forEach(function(el) { io.observe(el); });
+
+// ── FORM ──
+function submitForm(e) {
+  e.preventDefault();
+  var btn = e.target.querySelector('.btn-sub');
+  btn.textContent = '&#10003; Grazie! Ti contatteremo presto.';
+  btn.style.background = '#10b981';
+  setTimeout(function() { btn.textContent = T[lang]['fm.sb'] || 'Invia Messaggio'; btn.style.background = ''; }, 4000);
+}
+
+// ── PIANO AUDIO ──
+var AC = null, MG = null, playing = false, tmr = null, seqT = 0, mI = 0, cI = 0;
+var N = {C3:130.81,F3:174.61,G3:196,A3:220,C4:261.63,D4:293.66,E4:329.63,F4:349.23,G4:392,A4:440,B4:493.88,C5:523.25,D5:587.33,E5:659.25};
+var CH = [[N.A3,N.E4,N.G4,N.C5],[N.F3,N.C4,N.F4,N.A4],[N.C3,N.G4,N.C5,N.E5],[N.G3,N.D4,N.G4,N.B4]];
+var ML = [N.E5,N.D5,N.C5,N.D5,N.C5,N.A4,0,N.A4,N.G4,N.A4,N.C5,N.E5,N.D5,N.C5,N.D5,0];
+
+function pNote(f, t, dur, v) {
+  var o = AC.createOscillator(), g = AC.createGain();
+  var o2 = AC.createOscillator(), g2 = AC.createGain();
+  o.type = 'triangle'; o.frequency.value = f;
+  o2.type = 'sine'; o2.frequency.value = f * 2;
+  g.gain.setValueAtTime(0, t);
+  g.gain.linearRampToValueAtTime(v, t + 0.02);
+  g.gain.exponentialRampToValueAtTime(v * 0.4, t + 0.12);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  g2.gain.setValueAtTime(0, t);
+  g2.gain.linearRampToValueAtTime(v * 0.25, t + 0.015);
+  g2.gain.exponentialRampToValueAtTime(0.0001, t + dur * 0.4);
+  o.connect(g); o2.connect(g2); g.connect(MG); g2.connect(MG);
+  o.start(t); o.stop(t + dur + 0.05);
+  o2.start(t); o2.stop(t + dur * 0.5 + 0.05);
+}
+
+function sched() {
+  if (!AC || !playing) return;
+  var now = AC.currentTime;
+  while (seqT < now + 8) {
+    var bd = 0.5;
+    if (mI % 8 === 0) { CH[cI % CH.length].forEach(function(f) { pNote(f, seqT, 3.2, 0.036); }); cI++; }
+    var f = ML[mI % ML.length];
+    if (f) pNote(f, seqT, bd * 0.85, 0.10);
+    mI++; seqT += bd;
+  }
+  tmr = setTimeout(sched, 2000);
+}
+
+function startMusic() {
+  if (!AC) {
+    AC = new (window.AudioContext || window.webkitAudioContext)();
+    MG = AC.createGain(); MG.gain.value = 0.35;
+    var dl = AC.createDelay(0.3), dlg = AC.createGain();
+    dl.delayTime.value = 0.22; dlg.gain.value = 0.16;
+    MG.connect(dl); dl.connect(dlg); dlg.connect(AC.destination);
+    MG.connect(AC.destination);
+  }
+  if (AC.state === 'suspended') AC.resume();
+  playing = true; seqT = AC.currentTime; mI = 0; cI = 0; sched();
+}
+
+function stopMusic() { playing = false; if (tmr) clearTimeout(tmr); }
+
+function toggleMusic() {
+  var b = document.getElementById('mbtn');
+  if (playing) { stopMusic(); b.innerHTML = '&#128263;'; b.classList.add('muted'); }
+  else { startMusic(); b.innerHTML = '&#127925;'; b.classList.remove('muted'); }
+}
+
+// ── AUTOPLAY MUSICA al primo gesto ──
+var musicStarted = false;
+function tryMusic() {
+  if (musicStarted) return;
+  musicStarted = true;
+  startMusic();
+}
+['click','scroll','touchstart','keydown'].forEach(function(ev) {
+  document.addEventListener(ev, tryMusic, { once: true, passive: true });
+});
+
+// ── TRANSLATIONS ──
+var lang = 'it';
+var T = {
+  it: {
+    'n.ab':'Chi Siamo','n.st':'La Nostra Storia','n.sv':'Servizi','n.fn':'Fondatori','n.ct':'Contatti',
+    'h.ey':'Intelligenza Artificiale · Business Growth · Italia',
+    'h.h1':'Il Futuro del Tuo Business<br><em>Inizia Oggi</em>',
+    'h.sb':"ConceptIA trasforma l’Intelligenza Artificiale in crescita reale per la tua azienda. Siamo i tuoi partner strategici per conquistare il mercato italiano.",
+    'h.c1':'Scopri Come Crescere','h.c2':'La Nostra Storia',
+    'a.ey':'Chi Siamo','a.h2':"Trasformiamo l’AI in Valore Reale per il Tuo Business",
+    'a.bg':'Dedicati al tuo successo',
+    'a.p1':"ConceptIA è un’agenzia di consulenza specializzata in Intelligenza Artificiale applicata al business. Siamo nati con una visione chiara: rendere l’AI accessibile, comprensibile e profittevole per ogni tipo di impresa italiana.",
+    'a.p2':"Crediamo che l’Intelligenza Artificiale non sia un privilegio riservato alle grandi multinazionali, ma uno strumento potente che ogni azienda può padroneggiare per rimanere competitiva.",
+    'a.f1':'AI Strategica','a.f1s':'Soluzioni su misura','a.f2':'Crescita Misurabile','a.f2s':'ROI concreto',
+    'a.f3':'Partnership Vera','a.f3s':'Siamo al tuo fianco','a.f4':'Mercato Italiano','a.f4s':'Esperti del settore',
+    'q.t':'“Non stiamo vendendo tecnologia. Stiamo costruendo il futuro dei nostri clienti.”',
+    's.ey':'La Nostra Storia','s.h2':'Da Una Visione Condivisa Nasce ConceptIA',
+    's.sb':'Un percorso di innovazione, passione e determinazione per trasformare il modo in cui le aziende italiane abbracciano il futuro.',
+    's.y1':'2019','s.t1':"L’Inizio del Percorso",'s.d1':"Jose Obeso, dopo anni di esperienza nel settore IT e nello sviluppo di sistemi AI in grandi aziende europee, inizia a maturare la visione di portare l’intelligenza artificiale alle piccole e medie imprese italiane.",
+    's.y2':'2021','s.t2':"L’Incontro Decisivo",'s.d2':"Julio Aguero, con un solido background nelle relazioni istituzionali e nella direzione commerciale internazionale, incontra Jose. I due condividono la stessa visione: le aziende italiane meritano un partner tecnologico che parli la loro lingua.",
+    's.y3':'2023','s.t3':'Nasce ConceptIA','s.d3':"Dopo due anni di ricerca e test con clienti pilota, ConceptIA viene fondata ufficialmente. La missione: non limitarsi al cliente diretto, ma pensare al cliente finale del cliente.",
+    's.y4':'2024–2026','s.t4':'Leader del Mercato Italiano','s.d4':"ConceptIA si afferma come punto di riferimento per la consulenza AI in Italia, espandendo la rete di partner strategici e accompagnando decine di aziende nella trasformazione digitale.",
+    'm.ey':'La Nostra Missione','m.h2':'Non Solo il Tuo Cliente.<br>Il Cliente del Tuo Cliente.',
+    'm.sb':"Il nostro obiettivo va oltre la consulenza tradizionale. Lavoriamo perché il valore dei nostri clienti arrivi chiaramente al loro mercato finale.",
+    'm.c1':'Posizionamento Strategico','m.c1d':"Aiutiamo le aziende a occupare una posizione di leadership percepita nel mercato, comunicando il proprio valore in modo chiaro e differenziante grazie all’AI.",
+    'm.c2':'Partner, Non Fornitori','m.c2d':'Scegliamo di essere partner a lungo termine. Cresciamo insieme, condividiamo i successi e affrontiamo le sfide fianco a fianco.',
+    'm.c3':'Modernità come Presente','m.c3d':"La modernità non è il futuro — è il presente. Portiamo le aziende a comunicare nel linguaggio del mercato di oggi.",
+    'sv.ey':'Cosa Facciamo','sv.h2':'Servizi AI che Generano Risultati Concreti','sv.sb':"Ogni servizio è progettato per trasformare l’intelligenza artificiale in vantaggio competitivo reale.",
+    'sv.1t':'AI Consulting & Strategy','sv.1d':'Analizziamo il tuo business e definiamo la roadmap AI ideale per massimizzare crescita e competitività.',
+    'sv.2t':'Automazione Intelligente','sv.2d':'Automatizziamo i processi ripetitivi con AI, liberando il tuo team per attività ad alto valore aggiunto.',
+    'sv.3t':'AI per la Customer Experience','sv.3d':"Chatbot avanzati, personalizzazione automatica e analisi del sentiment per un’esperienza cliente eccezionale.",
+    'sv.4t':'Data Analytics & BI','sv.4d':'Trasformiamo i tuoi dati in insight strategici per decisioni più rapide e precise.',
+    'sv.5t':'AI Marketing & Growth','sv.5d':"Strategie di marketing potenziate dall’AI: targeting preciso, contenuti generativi e ottimizzazione automatica.",
+    'sv.6t':'Formazione & Change Management','sv.6d':"Formiamo il tuo team nell’uso dell’AI e accompagniamo l’organizzazione nel cambiamento culturale.",
+    'f.ey':'I Fondatori','f.h2':'Le Persone Dietro ConceptIA','f.sb':"Due professionisti, una visione condivisa: fare dell’Italia un paese all’avanguardia nell’adozione dell’Intelligenza Artificiale.",
+    'f.r1':'Co-Fondatore & CTO — Esperto di Intelligenza Artificiale',
+    'f.b1':"Con oltre 12 anni di esperienza nel settore IT e 7 anni dedicati allo sviluppo di sistemi AI in aziende leader europee, Jose porta in ConceptIA una visione tecnica profonda e la capacità di tradurre tecnologie complesse in soluzioni concrete.",
+    'f.r2':'Co-Fondatore & CEO — Direttore Commerciale e Relazioni Pubbliche',
+    'f.b2':"Julio è il ponte tra la tecnologia e il mercato. Con una carriera di 15 anni nella direzione commerciale e nelle relazioni istituzionali internazionali, ha costruito reti di partnership strategiche in tutta Europa.",
+    'tg.ey':'Una Partnership Solida','tg.h2':'Due Menti, Una Visione',
+    'tg.p1':"Jose e Julio si sono conosciuti a Milano nel 2021, entrambi convinti che l’Italia avesse bisogno di qualcosa di diverso: non un’altra società di consulenza, ma un vero partner che ragionasse come un imprenditore.",
+    'tg.p2':"La complementarità delle loro competenze — tecnica profonda per Jose, commerciale e relazionale per Julio — è la forza distintiva di ConceptIA.",
+    'tg.ct':'Incontra il Team',
+    'nm.1':'Aziende Partner','nm.2':'ROI Medio dei Clienti','nm.3':'Tasso di Soddisfazione','nm.4':'Rating Medio Partner',
+    'ct.ey':'Contattaci','ct.h2':'Inizia la Tua Trasformazione AI','ct.sb':"Siamo pronti ad ascoltarti. Raccontaci il tuo business e scopriremo insieme come l’AI può accelerare la tua crescita.",
+    'ct.ph':'Telefono','ct.hq':'Sede',
+    'fm.nm':'Nome','fm.co':'Azienda','fm.em':'Email','fm.sv':'Servizio di Interesse','fm.s0':'Seleziona un servizio','fm.ms':'Messaggio','fm.sb':'Invia Messaggio →',
+    'ft.d':"ConceptIA è il partner italiano di riferimento per la consulenza AI. Trasformiamo l’intelligenza artificiale in crescita reale.",
+    'ft.h1':'Azienda','ft.h2':'Servizi','ft.h3':'Contatti','ft.ms':'La Missione','ft.cp':'© 2026 ConceptIA S.r.l. — Tutti i diritti riservati · P.IVA IT12345678901'
+  },
+  es: {
+    'n.ab':'Quiénes Somos','n.st':'Nuestra Historia','n.sv':'Servicios','n.fn':'Fundadores','n.ct':'Contacto',
+    'h.ey':'Inteligencia Artificial · Crecimiento Empresarial · Italia',
+    'h.h1':'El Futuro de Tu Empresa<br><em>Comienza Hoy</em>',
+    'h.sb':'ConceptIA transforma la Inteligencia Artificial en crecimiento real para tu empresa. Somos tus socios estratégicos para conquistar el mercado.',
+    'h.c1':'Descubre Cómo Crecer','h.c2':'Nuestra Historia',
+    'a.ey':'Quiénes Somos','a.h2':'Transformamos la IA en Valor Real para Tu Empresa',
+    'a.bg':'Dedicados a tu éxito',
+    'a.p1':'ConceptIA es una agencia de consultoría especializada en Inteligencia Artificial aplicada al negocio. Nacimos con una visión clara: hacer la IA accesible, comprensible y rentable para todo tipo de empresa.',
+    'a.p2':'Creemos que la IA no es un privilegio de las grandes multinacionales, sino una herramienta poderosa que toda empresa puede dominar para seguir siendo competitiva.',
+    'a.f1':'IA Estratégica','a.f1s':'Soluciones a medida','a.f2':'Crecimiento Medible','a.f2s':'ROI concreto',
+    'a.f3':'Verdadera Alianza','a.f3s':'Estamos a tu lado','a.f4':'Mercado Italiano','a.f4s':'Expertos del sector',
+    'q.t':'“No vendemos tecnología. Construimos el futuro de nuestros clientes.”',
+    's.ey':'Nuestra Historia','s.h2':'De una Visión Compartida Nace ConceptIA',
+    's.sb':'Un camino de innovación, pasión y determinación para transformar cómo las empresas italianas abrazan el futuro.',
+    's.y1':'2019','s.t1':'El Comienzo del Camino','s.d1':'Jose Obeso, tras años de experiencia en IT y desarrollo de sistemas AI en grandes empresas europeas, comienza a madurar la visión de llevar la IA a las PYMEs italianas.',
+    's.y2':'2021','s.t2':'El Encuentro Decisivo','s.d2':'Julio Aguero, con sólida experiencia en relaciones institucionales y dirección comercial internacional, conoce a Jose. Ambos comparten la misma visión: las empresas italianas merecen un socio tecnológico que hable su idioma.',
+    's.y3':'2023','s.t3':'Nace ConceptIA','s.d3':'Tras dos años de investigación y pruebas con clientes piloto, ConceptIA se funda oficialmente. La misión: no solo servir al cliente directo, sino pensar en el cliente final del cliente.',
+    's.y4':'2024–2026','s.t4':'Líderes del Mercado Italiano','s.d4':'ConceptIA se consolida como referente de la consultoría AI en Italia, expandiendo la red de socios estratégicos.',
+    'm.ey':'Nuestra Misión','m.h2':'No Solo Tu Cliente.<br>El Cliente de Tu Cliente.',
+    'm.sb':'Nuestro objetivo va más allá de la consultoría tradicional. Trabajamos para que el valor que ofrecen nuestros clientes llegue clara y potentemente a su mercado final.',
+    'm.c1':'Posicionamiento Estratégico','m.c1d':'Ayudamos a las empresas a ocupar una posición de liderazgo percibido en el mercado, comunicando su valor de forma clara gracias a la IA.',
+    'm.c2':'Socios, No Proveedores','m.c2d':'Elegimos ser socios a largo plazo. Crecemos juntos, compartimos los éxitos y afrontamos los retos como verdaderos aliados.',
+    'm.c3':'La Modernidad es el Presente','m.c3d':'La modernidad no es el futuro — es el presente. Llevamos a las empresas a comunicar en el lenguaje del mercado actual.',
+    'sv.ey':'Lo Que Hacemos','sv.h2':'Servicios IA que Generan Resultados Concretos','sv.sb':'Cada servicio está diseñado para transformar la inteligencia artificial en ventaja competitiva real.',
+    'sv.1t':'AI Consulting & Strategy','sv.1d':'Analizamos tu negocio y definimos la hoja de ruta AI ideal para maximizar el crecimiento.',
+    'sv.2t':'Automatización Inteligente','sv.2d':'Automatizamos los procesos repetitivos con IA, liberando a tu equipo para actividades de alto valor.',
+    'sv.3t':'IA para la Experiencia del Cliente','sv.3d':'Chatbots avanzados, personalización automática y análisis de sentimiento para una experiencia excepcional.',
+    'sv.4t':'Data Analytics & BI','sv.4d':'Transformamos tus datos en insights estratégicos para decisiones más rápidas y precisas.',
+    'sv.5t':'IA Marketing & Growth','sv.5d':'Estrategias de marketing potenciadas por IA: targeting preciso, contenidos generativos y optimización automática.',
+    'sv.6t':'Formación & Gestión del Cambio','sv.6d':'Formamos a tu equipo en el uso de la IA y acompañamos a la organización en el cambio cultural.',
+    'f.ey':'Los Fundadores','f.h2':'Las Personas Detrás de ConceptIA','f.sb':'Dos profesionales, una visión compartida: hacer de Italia un país de vanguardia en la adopción de la Inteligencia Artificial.',
+    'f.r1':'Co-Fundador & CTO — Experto en Inteligencia Artificial',
+    'f.b1':'Con más de 12 años de experiencia en IT y 7 años desarrollando sistemas AI en empresas líderes europeas, Jose aporta una visión técnica profunda y la capacidad de traducir tecnologías complejas en soluciones de negocio.',
+    'f.r2':'Co-Fundador & CEO — Director Comercial y Relaciones Públicas',
+    'f.b2':'Julio es el puente entre la tecnología y el mercado. Con una carrera de 15 años en dirección comercial y relaciones institucionales internacionales, ha construido redes de alianzas estratégicas en toda Europa.',
+    'tg.ey':'Una Alianza Sólida','tg.h2':'Dos Mentes, Una Visión',
+    'tg.p1':'Jose y Julio se conocieron en Milán en 2021, convencidos de que Italia necesitaba algo diferente: no otra consultora tecnológica, sino un verdadero socio que pensara como emprendedor.',
+    'tg.p2':'La complementariedad de sus competencias — técnica profunda para Jose, comercial y relacional para Julio — es la fortaleza distintiva de ConceptIA.',
+    'tg.ct':'Conoce al Equipo',
+    'nm.1':'Empresas Socias','nm.2':'ROI Medio de Clientes','nm.3':'Tasa de Satisfacción','nm.4':'Rating Medio Socios',
+    'ct.ey':'Contacto','ct.h2':'Comienza Tu Transformación AI','ct.sb':'Estamos listos para escucharte. Cuéntanos tu negocio y descubriremos juntos cómo la IA puede acelerar tu crecimiento.',
+    'ct.ph':'Teléfono','ct.hq':'Sede',
+    'fm.nm':'Nombre','fm.co':'Empresa','fm.em':'Email','fm.sv':'Servicio de Interés','fm.s0':'Selecciona un servicio','fm.ms':'Mensaje','fm.sb':'Enviar Mensaje →',
+    'ft.d':'ConceptIA es el socio italiano de referencia en consultoría de Inteligencia Artificial. Transformamos la IA en crecimiento real.',
+    'ft.h1':'Empresa','ft.h2':'Servicios','ft.h3':'Contacto','ft.ms':'La Misión','ft.cp':'© 2026 ConceptIA S.r.l. — Todos los derechos reservados'
+  },
+  en: {
+    'n.ab':'About Us','n.st':'Our Story','n.sv':'Services','n.fn':'Founders','n.ct':'Contact',
+    'h.ey':'Artificial Intelligence · Business Growth · Italy',
+    'h.h1':'The Future of Your Business<br><em>Starts Today</em>',
+    'h.sb':'ConceptIA transforms Artificial Intelligence into real growth for your company. We are your strategic partners to conquer the Italian market.',
+    'h.c1':'Discover How to Grow','h.c2':'Our Story',
+    'a.ey':'About Us','a.h2':'We Transform AI into Real Value for Your Business',
+    'a.bg':'Dedicated to your success',
+    'a.p1':'ConceptIA is a consulting agency specialized in Artificial Intelligence applied to business. We were born with a clear vision: to make AI accessible, understandable and profitable for every type of company.',
+    'a.p2':'We believe AI is not a privilege reserved for large multinationals, but a powerful tool that every company can master to remain competitive in the modern market.',
+    'a.f1':'Strategic AI','a.f1s':'Tailored solutions','a.f2':'Measurable Growth','a.f2s':'Concrete ROI',
+    'a.f3':'True Partnership','a.f3s':'We are by your side','a.f4':'Italian Market','a.f4s':'Sector experts',
+    'q.t':'“We are not selling technology. We are building the future of our clients.”',
+    's.ey':'Our Story','s.h2':'From a Shared Vision ConceptIA Was Born',
+    's.sb':'A journey of innovation, passion and determination to transform how Italian companies embrace the future.',
+    's.y1':'2019','s.t1':'The Beginning of the Journey','s.d1':'Jose Obeso, after years of experience in IT and AI systems development at leading European companies, begins nurturing the vision of bringing AI to Italian SMEs.',
+    's.y2':'2021','s.t2':'The Decisive Meeting','s.d2':'Julio Aguero, with a solid background in institutional relations and international commercial direction, meets Jose. Both share the same vision: Italian companies deserve a tech partner that speaks their language.',
+    's.y3':'2023','s.t3':'ConceptIA Is Founded','s.d3':"After two years of research and testing with pilot clients, ConceptIA is officially founded. The mission: not just to serve the direct client, but to think about the client's end customer.",
+    's.y4':'2024–2026','s.t4':'Italian Market Leaders','s.d4':'ConceptIA establishes itself as the AI consulting reference in Italy, guiding dozens of companies through digital transformation.',
+    'm.ey':'Our Mission','m.h2':"Not Just Your Client.<br>Your Client's Client.",
+    'm.sb':'Our goal goes beyond traditional consulting. We work to ensure the value our clients offer reaches their end market clearly and powerfully.',
+    'm.c1':'Strategic Positioning','m.c1d':'We help companies occupy a position of perceived leadership, communicating their value clearly and distinctively through AI.',
+    'm.c2':'Partners, Not Suppliers','m.c2d':'We choose to be long-term partners. We grow together, share successes and face challenges side by side.',
+    'm.c3':'Modernity Is the Present','m.c3d':"Modernity is not the future — it is the present. We bring companies to communicate in today's market language.",
+    'sv.ey':'What We Do','sv.h2':'AI Services that Generate Concrete Results','sv.sb':'Every service is designed to transform artificial intelligence into real competitive advantage.',
+    'sv.1t':'AI Consulting & Strategy','sv.1d':'We analyze your business and define the ideal AI roadmap to maximize growth and competitiveness.',
+    'sv.2t':'Intelligent Automation','sv.2d':'We automate repetitive processes with AI, freeing your team for high-value activities.',
+    'sv.3t':'AI for Customer Experience','sv.3d':'Advanced chatbots, automatic personalization and sentiment analysis for an exceptional customer experience.',
+    'sv.4t':'Data Analytics & BI','sv.4d':'We transform your data into strategic insights for faster and more accurate business decisions.',
+    'sv.5t':'AI Marketing & Growth','sv.5d':'AI-powered marketing strategies: precise targeting, generative content and automatic optimization.',
+    'sv.6t':'Training & Change Management','sv.6d':'We train your team in AI usage and guide the organization through the cultural change needed to innovate.',
+    'f.ey':'The Founders','f.h2':'The People Behind ConceptIA','f.sb':'Two professionals, a shared vision: making Italy a leading country in the adoption of AI in business.',
+    'f.r1':'Co-Founder & CTO — Artificial Intelligence Expert',
+    'f.b1':'With over 12 years in IT and 7 years developing AI systems at leading European companies, Jose brings deep technical vision and the ability to translate complex technologies into concrete business solutions.',
+    'f.r2':'Co-Founder & CEO — Commercial Director and Public Relations',
+    'f.b2':'Julio is the bridge between technology and the market. With a 15-year career in commercial management and international institutional relations, he has built strategic partnership networks across Europe.',
+    'tg.ey':'A Solid Partnership','tg.h2':'Two Minds, One Vision',
+    'tg.p1':"Jose and Julio met in Milan in 2021, convinced Italy needed something different: not another tech consultancy, but a true partner that thinks like an entrepreneur.",
+    'tg.p2':'The complementarity of their skills — deep technical for Jose, commercial and relational for Julio — is the distinctive strength of ConceptIA.',
+    'tg.ct':'Meet the Team',
+    'nm.1':'Partner Companies','nm.2':'Average Client ROI','nm.3':'Satisfaction Rate','nm.4':'Average Partner Rating',
+    'ct.ey':'Contact','ct.h2':'Start Your AI Transformation','ct.sb':'We are ready to listen. Tell us about your business and we will discover together how AI can accelerate your growth.',
+    'ct.ph':'Phone','ct.hq':'HQ',
+    'fm.nm':'Name','fm.co':'Company','fm.em':'Email','fm.sv':'Service of Interest','fm.s0':'Select a service','fm.ms':'Message','fm.sb':'Send Message →',
+    'ft.d':'ConceptIA is the Italian reference partner for AI consulting. We transform artificial intelligence into real growth.',
+    'ft.h1':'Company','ft.h2':'Services','ft.h3':'Contact','ft.ms':'The Mission','ft.cp':'© 2026 ConceptIA S.r.l. — All rights reserved'
+  }
+};
+
+function setL(l) {
+  lang = l;
+  document.querySelectorAll('.lb').forEach(function(b) { b.classList.toggle('on', b.textContent === l.toUpperCase()); });
+  document.querySelectorAll('[data-t]').forEach(function(el) {
+    var v = T[l][el.getAttribute('data-t')];
+    if (v !== undefined) el.innerHTML = v;
+  });
+  document.documentElement.lang = l;
+}
+</script>
+</body>
+</html>
